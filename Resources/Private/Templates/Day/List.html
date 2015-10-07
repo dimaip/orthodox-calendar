@@ -1,0 +1,73 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+<f:flashMessages />
+
+<f:format.html parseFuncTSPath="">{easter}</f:format.html>
+<div class="tx-biblequote-pi1">
+	<p class="day">{day}</p>
+	<div class="wrap-top">
+		<p class="topDates" id="old_style"><span class="title">Старый стиль</span><span class="string">{date_o}</span></p>
+		<p class="topDates" id="new_style"><span class="title">Новый стиль</span><span class="string">{date}</span></p>
+	</div>
+	<div class="wrapPrevNext">
+		<f:if condition="{debug}">
+			<f:then>
+				<f:link.page id="prev" class="day_link" additionalParams="{tx_orthodox_orthodox: {date: date_prev},debug: 1}">Предыдущий день</f:link.page>
+				<f:link.page id="next" class="day_link" additionalParams="{tx_orthodox_orthodox: {date: date_next},debug: 1}">Следующий день</f:link.page>
+			</f:then>
+			<f:else>
+				<f:link.page id="prev" class="day_link" additionalParams="{tx_orthodox_orthodox: {date: date_prev}}">Предыдущий день</f:link.page>
+				<f:link.page id="next" class="day_link" additionalParams="{tx_orthodox_orthodox: {date: date_next}}">Следующий день</f:link.page>
+			</f:else>
+		</f:if>
+	</div>
+	<h4 class="week"><f:if condition="{week}">{week}.</f:if> <f:if condition="{glas}"><em>Глас {glas}</em></f:if></h4>
+	<f:format.html parseFuncTSPath="">{prazdnik_title}</f:format.html>
+	<h4 class="post">{lent}</h4>
+	<h3>Чтения дня</h3>
+	<div class="hr calendar_wrap readings">
+		<f:format.html parseFuncTSPath="">{reading}</f:format.html>
+		<a href="#all" id="all">Показать все чтения</a><br/>
+		<div class="readings_container"></div>
+		<br/><a target="_blank" href="http://www.patriarchia.ru/bu/{bu_day}">Богослужебные указания</a>
+	</div>
+	
+	<h3>Святые дня</h3>
+	<div class="hr calendar_wrap saints">
+	<f:format.html>{saints}</f:format.html>
+	</div>	
+	<f:if condition="{prayers}">
+		<h3>Тропари</h3>
+		<div class="hr calendar_wrap">
+		<f:format.html parseFuncTSPath="">{prayers}</f:format.html>
+		</div>
+	</f:if>	
+	<f:if condition="{sermons}">
+		<h3>Проповедь</h3>
+		<div class="hr calendar_wrap">
+		<f:for each="{sermons}" as="sermon" iteration="it">
+			<f:if condition="{it.isFirst}">
+				<f:then>
+					<h3>{sermon.author}</h3>
+					<h4>{sermon.title}</h4>
+					<h5>{sermon.teaser}</h5>
+					<f:format.html>{sermon.bodytext}</f:format.html>
+				</f:then>
+				<f:else>
+					<h4>Другие проповеди на этот день:</h4>
+					<h5><f:link.page pageUid="125" additionalParams="{tx_news_pi1: {news: sermon.uid}}">{sermon.author}: {sermon.title}</f:link.page></h5>
+				</f:else>
+			</f:if>
+		</f:for>
+		</div>
+	</f:if>
+	
+	<br/><p><em>* Чтения проверены в диапазоне от 1 января 2013 до Пасхи 2014. <f:link.page pageUid="334">Подробнее о работе календаря.</f:link.page></em></p> 
+	<div id="datepicker2" ></div>
+</div>
+<br/>
+<f:format.html parseFuncTSPath="">{debug}</f:format.html>
+</f:section>
+
+

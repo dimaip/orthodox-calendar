@@ -1,0 +1,32 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>Orthodox's Config</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <switchableControllerActions>
+            <TCEforms>
+              <label>Choose the action</label>
+              <config>
+                <type>select</type>
+                <items>
+                   <numIndex index="0">
+                     <numIndex index="0">Day</numIndex>
+                     <numIndex index="1">Day->list</numIndex>
+                   </numIndex>
+                   <numIndex index="1">
+                     <numIndex index="0">Bible</numIndex>
+                     <numIndex index="1">Bible->list</numIndex>
+                   </numIndex>
+                 </items>
+              </config>
+            </TCEforms>
+          </switchableControllerActions>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>
