@@ -22,12 +22,13 @@
 			</f:else>
 		</f:if>
 	</div>
-	<h4 class="week"><f:if condition="{week}">{week}.</f:if> <f:if condition="{glas}"><em>Глас {glas}</em></f:if></h4>
-	<f:format.html parseFuncTSPath="">{prazdnik_title}</f:format.html>
+	<h4 class="week"><f:if condition="{week}">{week -> f:format.raw()}</f:if> <f:if condition="true"><em>Глас {glas}</em></f:if></h4>
+	<f:format.html parseFuncTSPath="">{prazdnik_title -> f:format.raw()}</f:format.html>
 	<h4 class="post">{lent}</h4>
 	<h3>Чтения дня</h3>
 	<div class="hr calendar_wrap readings">
 		<f:format.html parseFuncTSPath="">{reading}</f:format.html>
+		<f:format.html parseFuncTSPath="">{comment}</f:format.html>
 		<a href="#all" id="all">Показать все чтения</a><br/>
 		<div class="readings_container"></div>
 		<br/><a target="_blank" href="http://www.patriarchia.ru/bu/{bu_day}">Богослужебные указания</a>
@@ -63,7 +64,7 @@
 		</div>
 	</f:if>
 	
-	<br/><p><em>* Чтения проверены в диапазоне от 1 января 2013 до Пасхи 2014. <f:link.page pageUid="334">Подробнее о работе календаря.</f:link.page></em></p> 
+	<br/>
 	<div id="datepicker2" ></div>
 </div>
 <br/>

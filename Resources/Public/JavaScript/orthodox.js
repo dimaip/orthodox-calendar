@@ -361,10 +361,12 @@ return false;
                 return [true, 'highlight-great', tipsgreat[i]];
             }
         }
-		
+
 		var lent_check = lent(d,m,y);
+		var lent7class = lent_check[1] == level7 ? 'lent7' : '';
+		
 		if(lent_check)
-			return [true, 'highlight-post', lent_check[0]];
+			return [true, 'highlight-post ' + lent7class, lent_check[0]];
 		
 		
 

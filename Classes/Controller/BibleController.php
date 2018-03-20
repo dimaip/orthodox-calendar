@@ -1,5 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: http://c.psmb.ru');
+header('Access-Control-Allow-Origin: https://c.psmb.ru');
 /***************************************************************
  *  Copyright notice
  *
@@ -106,7 +106,7 @@ class Tx_Orthodox_Controller_BibleController extends Tx_Extbase_MVC_Controller_A
 				$settings = file("bible/".$folder."/bibleqt.ini");
 				
 				foreach($settings as $key=>$setting){
-					$setting = iconv('cp1251','utf-8',$setting);
+					// $setting = iconv('cp1251','utf-8',$setting);
 					$comm = preg_match('{^\s*//}',$setting);
 					if(!$comm){		
 						$bib = preg_match('{^\s*BibleName\s*=\s*(.+)$}',$setting,$matches);
@@ -139,7 +139,16 @@ class Tx_Orthodox_Controller_BibleController extends Tx_Extbase_MVC_Controller_A
 	public function listAction($zachalo = 'Mt.1',$trans = null) {
 		$block = "
 
+
 function ajaxify(){
+	var linkToBible = document.getElementById('top');
+	if (linkToBible) {
+		linkToBible.addEventListener('click', function (e) {
+			e.preventDefault();
+			location.hash = '#books';
+		});
+	}
+
 	jQuery('.books li a,.trans a,.chapter_selector li a').unbind('click');
 	
 	jQuery('.books li a').click(function(event) {
@@ -153,7 +162,7 @@ function ajaxify(){
 	  var doc_title = book+' '+chap+' / '+trans+' / Онлайн Библия';
 	  document.title = doc_title;
 	  if(history.pushState){ history.pushState(null, doc_title, href); }
-	  jQuery('.wrap_center').load(href+'?type=555', function(){ajaxify();});
+	  jQuery('.wrap_center').load(href+'?type=555', function(){location.hash = '#top'; ajaxify();});
 	});
 	
 	jQuery('.trans a').click(function(event) {
@@ -188,63 +197,13 @@ function ajaxify(){
 		var idstr = 's' + jQuery(this).text().trim();
 		jQuery(this).attr('id',idstr);
 	});
-	
-	jQuery('#output p').click(function() {
-		var book = jQuery('.books li a.active').text().trim();
-		var chap = jQuery('.chapter_selector li a.active').text().trim();
-		var verse_key = jQuery(this).html().match(/<sup.*>(.*)<\/sup>/)[1];
-		var trans = jQuery('.trans a.active').text().trim();
-		var verse_string = book+' '+chap+':'+verse_key;
-		var doc_title = book+' '+chap+':'+verse_key+' / '+trans+' / Онлайн Библия';
-		document.title = doc_title;
-		var text = jQuery(this).text().trim() + ' /' + verse_string + '/';
-		var verse_url = window.location.href.split('#')[0]+'#s'+verse_key;
-		addthis.update('share', 'url', verse_url); 
-		addthis.update('share', 'title', doc_title); 
-		jQuery('#linkquote').val(verse_url);
-		jQuery('#dialog textarea').val(text);
-		jQuery('#dialog').dialog('open');
-    });
 }
 		
 jQuery(document).ready(function() {
-/*
-		jQuery(document).scroll(function(){
-            if (!jQuery('.trans').attr('data-top')) {
-                // If already fixed, then do nothing
-                if (jQuery('.trans').hasClass('trans-fixed')) return;
-                // Remember top position
-                var offset = jQuery('.trans').offset()
-                jQuery('.trans').attr('data-top', offset.top);
-            }
-
-            if (jQuery('.trans').attr('data-top') - jQuery('.trans').outerHeight() <= jQuery(this).scrollTop())
-                jQuery('.trans').addClass('trans-fixed');
-            else
-                jQuery('.trans').removeClass('trans-fixed');
-        });
-*/
-
 
 	ajaxify();
 	var hash = window.location.hash;
 	jQuery('.output p').has(hash).addClass('highlight');
-	
-	jQuery('#dialog').dialog({
-      autoOpen: false,
-	  title: 'Копировать цитату из Библии',
-	  width: 420,
-	  height: 300,
-      show: {
-        effect: 'blind',
-        duration: 500
-      },
-      hide: {
-        effect: 'blind',
-        duration: 500
-      }
-    });
-	jQuery('#linkquote, #dialog textarea').click(function() {jQuery(this).select(); } );
 	
 
 	jQuery('.news_load').ajaxStart(function() {
@@ -283,7 +242,9 @@ jQuery(document).ready(function() {
 			$zachalo = $versekey;
 		}
 		if($bookchap){
-			list($book_key,$chap_key) = explode('.',$bookchap);
+			$bookchapExp = explode('.',$bookchap);
+			$chap_key = array_pop($bookchapExp);
+			$book_key = implode('.', $bookchapExp);
 		}
 		
 		if($zachalo){
@@ -356,9 +317,9 @@ jQuery(document).ready(function() {
 		
 		$settings = file("bible/".$trans."/bibleqt.ini");
 		
-		$utf88 = preg_match('{^\s*DefaultEncoding\s*=\s*(.+)$}',$setting,$matches);
-		if(substr($trans,1) == 'NA28'||substr($trans,1) == 'BHS')
-			$utf8 = true;
+		// $utf88 = preg_match('{^\s*DefaultEncoding\s*=\s*(.+)$}',$setting,$matches);
+		$utf8 = true;
+
 		foreach($settings as $key=>$setting){
 			if(!$utf8)
 				$setting = iconv('cp1251','utf-8',$setting);
@@ -405,7 +366,8 @@ jQuery(document).ready(function() {
 		}else{
 			$GLOBALS['TSFE']->additionalHeaderData['99'] = "<title>".$full_name." ".$chap_key." / ".$this->active_trans_name." / Онлайн Библия</title>";
 		}
-		$text = file_get_contents('bible/'.$trans.'/'.$path);
+		$filepath = 'bible/'.$trans.'/'.$path;
+		$text = file_get_contents($filepath);
 		if(!$utf8)
 			$text = iconv('cp1251','utf-8',$text);
 		$text = preg_replace('/<p>([0-9]{1,2})/','<p><sup>$1</sup>',$text);
@@ -467,6 +429,12 @@ $thebible = array(
 			'Ездра' => array('Ezr',''),
 			'Неемия' => array('Neh',''),
 			'Есфирь' => array('Est',''),
+			'1-я Маккавейская' => array('1Мак', ''),
+			'2-я Маккавейская' => array('2Мак', ''),
+			'3-я Маккавейская' => array('3Мак', ''),
+			'2-я Ездры' => array('2Ездры', ''),
+			'3-я Ездры' => array('3Ездры', ''),
+			'Иудифь' => array('Иудифь', '')
 		),
 		'Книги учительные' => array(
 			'Иов' => array('Job',''),
@@ -474,6 +442,9 @@ $thebible = array(
 			'Притчи' => array('Prov',''),
 			'Екклесиаст' => array('Eccl',''),
 			'Песня Песней' => array('Songs',''),
+			'Премудрости Соломона' => array('Премудрости'),
+			'Сирах' => array('Сирах', ''),
+			'Товит' => array('Товит', '')
 		),
 		'Книги пророческие' => array(
 			'Исаия' => array('Isa',''),
@@ -493,6 +464,8 @@ $thebible = array(
 			'Аггей' => array('Hag',''),
 			'Захария' => array('Zec',''),
 			'Малахия' => array('Mal',''),
+			'Варух' => array('Варух', ''),
+			'Послание Иеремии' => array('Посл.Иерем', ''),
 		),
 	),
 	'Новый завет' => array(
@@ -548,10 +521,10 @@ $thebible = array(
 		$this->view->assign('thebible',$thebible);
 		$this->view->assign('output',$output);
 		$this->view->assign('typenum',$typenum);
-		
+		$this->view->assign('filepath',$filepath);
+
 
 		
 	}
 
-}
-?>
+} ?>

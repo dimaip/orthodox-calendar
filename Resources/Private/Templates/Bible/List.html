@@ -1,8 +1,8 @@
 {namespace v=Tx_Vhs_ViewHelpers}
 <div class="wrap_center">
 	<h4>{zachalo_title}</h4>
-
-	<h1>{book_name}</h1>
+	<h1>{book_name} <a class="link-to-bible" id="top" href="#">Выбор книги</a></h1>
+	
 	<div><div style="float:left;margin-right:5px;">Главы: </div>
 		<ul class="chapter_selector">
 			<v:iterator.loop count="{chap_count}" iteration="chapter">
@@ -18,7 +18,7 @@
 			</v:iterator.loop>
 		</ul>
 	</div>
-	<div class="trans" style="background: #e6dec5; padding: 10px;margin:10px 0px; width: 600px; top: 0px;">Перевод: {active_trans.path}
+	<div class="trans" style="background: #e6dec5; padding: 10px;margin:10px 0px; max-width: 600px; top: 0px;">Перевод: {active_trans.path}
 	<f:for each="{avail_trans}" as="tr">
 		<f:if condition="{active_trans} == {tr.path}">
 			<f:then>
@@ -34,7 +34,8 @@
 	<div class="output" id="output"><f:format.html parseFuncTSPath="">{output}</f:format.html></div>
 </div>
 <f:if condition="{typenum} != 555">
-	<ul style="overflow:auto;" class="testaments">
+	<a name="books"></a>
+	<ul style="overflow:auto;" class="testaments" id="#books">
 	<f:for each="{thebible}" key="testamentkey" as="testament">
 		<li>
 		<h2>{testamentkey}</h2>
@@ -56,7 +57,7 @@
 				</f:if>
 				<!--<ul>
 				<v:iterator.loop count="{book.1}" iteration="chapter">
-					<li><a href="http://c.psmb.ru/pravoslavnyi-kalendar/bible/book/{book.0}.{chapter.cycle}/">{chapter.cycle}</a></li>
+					<li><a href="https://c.psmb.ru/pravoslavnyi-kalendar/bible/book/{book.0}.{chapter.cycle}/">{chapter.cycle}</a></li>
 				</v:iterator.loop>
 				</ul>-->
 				</li>
@@ -94,3 +95,5 @@
 	</div>
 
 </f:if>
+
+<!-- FILEPATH {filepath} -->

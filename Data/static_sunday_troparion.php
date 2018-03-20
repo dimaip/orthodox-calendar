@@ -38,6 +38,6 @@ $sunday_troparion['8']='<h5>Тропарь воскресения. Глас 8</h
 <h5>Кондак воскресения. Глас 8</h5>
 <p>Восстав из гробницы, Ты воздвиг уме\'рших / и Адама восставил; / и Ева ликует о Воскресении Твоём, / и пределы мира торжествуют // о Твоём Восстании из мёртвых, Многомилостивый!</p>';
 foreach($sunday_troparion as $k => $v){
-	$sunday_troparion[$k] .= '<div class="media"><a href="http://www.psmb.ru/typo3conf/ext/orthodox/Resources/Public/Audio/glass'.$k.'.mp3" target="_blank">Тропарь</a></div><br/><a href="/audio/bogosluzhebnye-pesnopenija/statja/voskresnye-tropari/">Прослушать воскресные тропари (аудио)</a>';
+	$sunday_troparion[$k] .= '<div class="media"><a href="/typo3conf/ext/orthodox/Resources/Public/Audio/glass'.$k.'.mp3" target="_blank">Тропарь</a></div><br/><a href="https://psmb.ru/a/voskresnye-tropari.html">Прослушать воскресные тропари (аудио)</a>';
 }
 ?>
